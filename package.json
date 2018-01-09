@@ -1,0 +1,26 @@
+{
+  "name": "beer.shop",
+  "version": "1.0.0",
+  "description": "Simple web shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzanatoliy/beer.shop.git"
+  },
+  "keywords": [
+    "node",
+    "javascript"
+  ],
+  "author": "Kuzmiankou Anatoli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuzanatoliy/beer.shop/issues"
+  },
+  "homepage": "https://github.com/kuzanatoliy/beer.shop#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
