@@ -1,8 +1,0 @@
-{
-  "name": "Beer Shop",
-  "urls": {
-    "logIn": "/log-in",
-    "signUp": "/sign-up",
-    "logOut": "/log-out"
-  }
-}
