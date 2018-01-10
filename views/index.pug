@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta(name='description' content='Beer shop')
+    meta(name='author' content='Kuzmiankou Anatoli')
+    meta(charset='UTF-8')
+    title!= title
+    link(rel='stylesheet' type='text/css' href='styles.css')
+  body
+    header
+      h1!= name
+    nav
+      include nav.pug
+    main
+    footer
+    script(src='scripts.js')
