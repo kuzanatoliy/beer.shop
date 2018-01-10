@@ -1,4 +1,48 @@
+$primary-color: #464547
+$special-color: #39C2D7
+$alloted-color: #A3C644
+$light-color: #FFFFFF
+
+body
+  margin: 0
+  color: $primary-color
+
+header
+  background-color: $special-color
+
 header > h1
-  width: 100%
   text-align: center
   font-size: 4em
+  margin: 0
+  padding: 0.5em
+  color: $light-color
+
+nav
+  background-color: $special-color
+  
+  .menu
+    display: flex
+    align-items: stretch
+    border-top: $primary-color solid 2px
+    justify-content: space-between
+    
+    .menu-item
+    
+    .menu-item a
+      font-size: 1.5em
+      padding-top: 0.5em
+      padding-bottom: 0.5em
+      padding-left: 1em
+      padding-right: 1em
+      text-decoration: none
+      display: inline-block
+      color: $light-color
+    
+    .menu-item > a:hover
+      color: $primary-color
+    
+    .left, .right
+      list-style-type: none
+      display: flex
+      padding: 0
+      margin: 0
