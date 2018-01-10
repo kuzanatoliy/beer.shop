@@ -1,6 +1,0 @@
-{
-  "database": "beer_shop",
-  "username": "root",
-  "password": "MYSQL",
-  "dialect": "mysql"
-}
