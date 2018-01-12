@@ -1,5 +1,5 @@
 const up = queryInterface => {
-  queryInterface.bulkInsert('OrderStatuses', [{
+  return queryInterface.bulkInsert('OrderStatuses', [{
     id: 1,
     name: 'completed'
   }, {
@@ -15,7 +15,7 @@ const up = queryInterface => {
 };
 
 const down = queryInterface => {
-  queryInterface.bulkDelete('OrderStatuses', null, {});
+  return queryInterface.bulkDelete('OrderStatuses', null, {});
 };
 
 module.exports = {

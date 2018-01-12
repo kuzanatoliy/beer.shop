@@ -1,15 +1,15 @@
 const up = queryInterface => {
-  queryInterface.bulkInsert('Cities', [{
+  return queryInterface.bulkInsert('Cities', [{
     id: 1,
-    name: 'beer'
+    name: 'Gomel'
   }, {
     id: 2,
-    name: 'butterbeer'
+    name: 'Minsk'
   }], {});
 };
 
 const down = queryInterface => {
-  queryInterface.bulkDelete('Cities', null, {});
+  return queryInterface.bulkDelete('Cities', null, {});
 };
 
 module.exports = {

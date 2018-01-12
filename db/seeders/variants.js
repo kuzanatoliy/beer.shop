@@ -1,5 +1,5 @@
 const up = queryInterface => {
-  queryInterface.bulkInsert('Variants', [{
+  return queryInterface.bulkInsert('Variants', [{
     id: 1,
     name: '0.33'
   }, {
@@ -18,7 +18,7 @@ const up = queryInterface => {
 };
 
 const down = queryInterface => {
-  queryInterface.bulkDelete('Variants', null, {});
+  return queryInterface.bulkDelete('Variants', null, {});
 };
 
 module.exports = {

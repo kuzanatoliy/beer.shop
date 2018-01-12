@@ -15,6 +15,14 @@ const getConnection = () => {
   return connection;
 };
 
+const close = () => {
+  if (connection) {
+    connection.close();
+    connection = null;
+  }
+};
+
 module.exports = {
-  getConnection
+  getConnection,
+  close
 };

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const provider = require('../connection');
 const connection = provider.getConnection();
 const configs = require('./configs');
+const { Roles } = require('./roles');
 
 const params = {
   login: {
@@ -45,6 +46,9 @@ const params = {
 };
 
 const Users = connection.define('users', params, configs);
+
+Users.hasMany(Roles, { foreignKey: 'role_id' });
+Roles.belongsTo(Users, { foreignKey: 'role_id' });
 
 module.exports = {
   Users
