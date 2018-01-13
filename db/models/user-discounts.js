@@ -17,8 +17,8 @@ const params = {
 
 const UserDiscounts = connection.define('user_discounts', params, configs);
 
-UserDiscounts.hasMany(Users, { foreignKey: 'user_id' });
-Users.belongsTo(UserDiscounts, { foreignKey: 'user_id' });
+//UserDiscounts.hasMany(Users, { foreignKey: 'user_id' });
+//Users.belongsTo(UserDiscounts, { foreignKey: 'user_id' });
 
 module.exports = {
   UserDiscounts

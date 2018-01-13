@@ -47,8 +47,8 @@ const params = {
 
 const Users = connection.define('users', params, configs);
 
-Users.hasMany(Roles, { foreignKey: 'role_id' });
-Roles.belongsTo(Users, { foreignKey: 'role_id' });
+//Users.hasMany(Roles, { foreignKey: 'role_id' });
+Users.belongsTo(Roles, { foreignKey: 'role_id' });
 
 module.exports = {
   Users
