@@ -11,6 +11,7 @@ const params = {
     unique: true,
     isValidate: {
       notNull: true,
+      notEmpty: true,
       is: /^\w+$/
     }
   },
@@ -19,6 +20,7 @@ const params = {
     allowNull: false,
     isValidate: {
       notNull: true,
+      notEmpty: true,
       is: /^[A-Z]?[a-z]+$/
     }
   },
@@ -27,6 +29,7 @@ const params = {
     allowNull: false,
     isValidate: {
       notNull: true,
+      notEmpty: true,
       is: /^[A-Z]?[a-z]+$/
     }
   },
@@ -35,6 +38,7 @@ const params = {
     allowNull: false,
     isValidate: {
       notNull: true,
+      notEmpty: true,
       is: /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
   },
@@ -47,7 +51,7 @@ const params = {
 
 const Users = connection.define('users', params, configs);
 
-//Users.hasMany(Roles, { foreignKey: 'role_id' });
+Roles.hasMany(Users, { foreignKey: 'role_id' });
 Users.belongsTo(Roles, { foreignKey: 'role_id' });
 
 module.exports = {

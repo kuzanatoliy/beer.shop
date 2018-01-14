@@ -12,14 +12,17 @@ html
     nav
       include nav.pug
     main
-      case page
-        when '/log-in'
-          include pages/log-in
-          - break
-        when '/sign-up'
-          include pages/sign-up
-          - break
-        default
-          include pages/default
+      if message
+        div.message!= message
+      div.main
+        case page
+          when '/log-in'
+            include pages/log-in
+            - break
+          when '/sign-up'
+            include pages/sign-up
+            - break
+          default
+            include pages/default
     footer
     script(src='scripts.js')

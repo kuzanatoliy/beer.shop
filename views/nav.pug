@@ -7,7 +7,13 @@ div.menu
     li.menu-item 
       a item 2
   ul.right
-    li.menu-item 
-      a(href='/log-in') Log In
-    li.menu-item 
-      a(href!='/sign-up') Sign Up
+    if userData
+      li.menu-item
+        a(href='#') #{ userData.name } #{ userData.surname }
+      li.menu-item
+        a(href='/log-out') Log Out
+    else
+      li.menu-item 
+        a(href='/log-in') Log In
+      li.menu-item 
+        a(href!='/sign-up') Sign Up

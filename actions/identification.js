@@ -1,31 +1,56 @@
 const { Users, Roles } = require('../db/models');
 
-const HAS_ATTRIBUTES = ['id', 'login', 'name', 'surname'];
-const CREATE_ATTRIBUTES = ['login', 'name', 'surname', 'password'];
+const HAS_OPTIONS = {
+  attributes: ['id', 'login', 'name', 'surname'],
+  include: {
+    model: Roles,
+    attributes: ['name']
+  }
+};
+const CREATE_OPTIONS = {
+  attributes: ['login', 'name', 'surname', 'password'],
+  include: { model: Roles }
+};
 
-const HAS_ERROR_MESSAGE = 'User not found';
+const errorResults = {
+  HAS_ERROR: { status: false, message: 'User not found' },
+  CREATE_ERROR: { status: false, message: 'User cannot be created' },
+  ERROR: { status: false, message: 'Error' }
+};
+
+const hasDataConvert = item => ({
+  id: item.id,
+  login: item.login,
+  name: item.name,
+  surname: item.surname,
+  role: item.role.name
+});
 
 const hasUser = async data => {
   let result;
   try {
-    result = await Users.findAll({ attributes: HAS_ATTRIBUTES,
-      include: { model: Roles, attributes: [['name', 'role']] } });
-    console.log(result[0]);
-    //const where = { login: data.login, password: data.password, include: [{ model: Roles }] };
-    //const userData = await Users.findOne({ where, attributes: HAS_ATTRIBUTES });
-    //userData
-    //  ? result = { status: true, userData }
-    //  : result = { status: false, message: HAS_ERROR_MESSAGE };
-    //console.log(result);
+    const where = { login: data.login, password: data.password };
+    const userData = await Users.findOne({ where, ...HAS_OPTIONS });
+    userData
+      ? result = { status: true, userData: hasDataConvert(userData) }
+      : result = errorResults.HAS_ERROR;
   } catch (err) {
-    result = { status: false };
+    result = errorResults.ERROR;
     console.log(err);
   }
   return result;
 };
 
-const createUser = data => {
-  console.log(CREATE_ATTRIBUTES);
+const createUser = async data => {
+  let result;
+  try {
+    result = await hasUser(await Users.create(data, CREATE_OPTIONS));
+    console.log(result);
+  } catch (err) {
+    result = errorResults.ERROR;
+    console.log(err);
+  }
+  return result;
 };
 
 module.exports = {
