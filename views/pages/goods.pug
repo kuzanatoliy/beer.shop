@@ -1,0 +1,7 @@
+.goods
+  each item in goods
+    .good
+      .title!= item.name
+      .body
+        .type!= item.type
+        a(href='/goods/'+item.id) More information

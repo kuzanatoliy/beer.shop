@@ -36,7 +36,7 @@ const hasUser = async data => {
       : result = errorResults.HAS_ERROR;
   } catch (err) {
     result = errorResults.ERROR;
-    console.log(err);
+    console.error(err);
   }
   return result;
 };
@@ -45,10 +45,9 @@ const createUser = async data => {
   let result;
   try {
     result = await hasUser(await Users.create(data, CREATE_OPTIONS));
-    console.log(result);
   } catch (err) {
     result = errorResults.ERROR;
-    console.log(err);
+    console.error(err);
   }
   return result;
 };

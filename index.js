@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const identification = require('./controllers/identification');
+const goods = require('./controllers/goods');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(bodyParser());
 app.use(session({ secret: 'beer shop' }));
 
 app.use('/', identification);
+app.use('/goods', goods);
 
 app.get('/', (req, res) => {
   const { session } = req;

@@ -5,7 +5,7 @@ html
     meta(name='author' content='Kuzmiankou Anatoli')
     meta(charset='UTF-8')
     title!= title
-    link(rel='stylesheet' type='text/css' href='styles.css')
+    link(rel='stylesheet' type='text/css' href='/styles.css')
   body
     header
       h1 Beer Shop
@@ -22,7 +22,13 @@ html
           when '/sign-up'
             include pages/sign-up
             - break
+          when '/goods'
+            include pages/goods
+            - break
+          when '/goods/id'
+            include pages/product
+            - break
           default
             include pages/default
     footer
-    script(src='scripts.js')
+    script(src='/scripts.js')
