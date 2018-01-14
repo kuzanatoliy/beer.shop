@@ -22,10 +22,10 @@ const params = {
 
 const ProductCounts = connection.define('product_counts', params, configs);
 
-ProductCounts.hasMany(Cities, { foreignKey: 'city_id' });
-Cities.belongsTo(ProductCounts, { foreignKey: 'city_id' });
-ProductCounts.hasMany(ProductVariants, { foreignKey: 'product_variant_id' });
-ProductVariants.belongsTo(ProductCounts, { foreignKey: 'product_variant_id' });
+Cities.hasMany(ProductCounts, { foreignKey: 'city_id' });
+ProductCounts.belongsTo(Cities, { foreignKey: 'city_id' });
+ProductVariants.hasMany(ProductCounts, { foreignKey: 'product_variant_id' });
+ProductCounts.belongsTo(ProductVariants, { foreignKey: 'product_variant_id' });
 
 module.exports = {
   ProductCounts

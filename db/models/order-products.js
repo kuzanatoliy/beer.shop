@@ -26,10 +26,10 @@ const params = {
 
 const OrderProducts = connection.define('order_products', params, configs);
 
-OrderProducts.hasMany(ProductVariants, { foreignKey: 'product_variant_id' });
-ProductVariants.belongsTo(OrderProducts, { foreignKey: 'product_variant_id' });
-OrderProducts.hasMany(Orders, { foreignKey: 'order_id' });
-Orders.belongsTo(OrderProducts, { foreignKey: 'order_id' });
+ProductVariants.hasMany(OrderProducts, { foreignKey: 'product_variant_id' });
+OrderProducts.belongsTo(ProductVariants, { foreignKey: 'product_variant_id' });
+Orders.hasMany(OrderProducts, { foreignKey: 'order_id' });
+OrderProducts.belongsTo(Orders, { foreignKey: 'order_id' });
 
 module.exports = {
   OrderProducts

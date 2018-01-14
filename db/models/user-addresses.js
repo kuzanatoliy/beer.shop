@@ -34,10 +34,10 @@ const params = {
 
 const UserAddresses = connection.define('user_addresses', params, configs);
 
-//UserAddresses.hasMany(Users, { foreignKey: 'user_id' });
-//Users.belongsTo(UserAddresses, { foreignKey: 'user_id' });
-//UserAddresses.hasMany(Cities, { foreignKey: 'city_id' });
-//Cities.belongsTo(UserAddresses, { foreignKey: 'city_id' });
+Users.hasMany(UserAddresses, { foreignKey: 'user_id' });
+UserAddresses.belongsTo(Users, { foreignKey: 'user_id' });
+Cities.hasMany(UserAddresses, { foreignKey: 'city_id' });
+UserAddresses.belongsTo(Cities, { foreignKey: 'city_id' });
 
 module.exports = {
   UserAddresses

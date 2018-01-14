@@ -22,10 +22,10 @@ const params = {
 
 const Orders = connection.define('orders', params, configs);
 
-Orders.hasMany(UserAddresses, { foreignKey: 'user_address_id' });
-UserAddresses.belongsTo(Orders, { foreignKey: 'user_address_id' });
-Orders.hasMany(OrderStatuses, { foreignKey: 'status_id' });
-OrderStatuses.belongsTo(Orders, { foreignKey: 'status_id' });
+UserAddresses.hasMany(Orders, { foreignKey: 'user_address_id' });
+Orders.belongsTo(UserAddresses, { foreignKey: 'user_address_id' });
+OrderStatuses.hasMany(Orders, { foreignKey: 'status_id' });
+Orders.belongsTo(OrderStatuses, { foreignKey: 'status_id' });
 
 module.exports = {
   Orders
