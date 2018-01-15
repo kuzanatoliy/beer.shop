@@ -15,8 +15,7 @@ const params = {
     allowNull: false
   },
   date: {
-    type: Sequelize.DATE,
-    allowNull: false
+    type: Sequelize.DATE
   }
 };
 

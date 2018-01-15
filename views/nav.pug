@@ -4,8 +4,9 @@ div.menu
       a(href='/') home
     li.menu-item 
       a(href='/goods') goods
-    li.menu-item 
-      a item 2
+    if userData
+      li.menu-item 
+        a(href="/busket") busket
   ul.right
     if userData
       li.menu-item

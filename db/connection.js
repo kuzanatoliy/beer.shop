@@ -3,6 +3,10 @@ const configs = require('./configs.json');
 
 let connection = null;
 
+const sync = () => {
+  return getConnection().sync();
+};
+
 const createConnection = () => {
   const { database, username, password, dialect } = configs;
   connection = new Sequelize(database, username, password, { dialect });
@@ -24,5 +28,6 @@ const close = () => {
 
 module.exports = {
   getConnection,
-  close
+  close,
+  sync
 };

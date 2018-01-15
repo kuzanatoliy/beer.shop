@@ -1,9 +1,11 @@
 const seeders = require('../seeders');
 const queryInterface = require('./queryInterface');
-const { close } = require('../connection');
+const { close, sync } = require('../connection');
 
 const migrate = async () => {
   try {
+    await sync();
+
     await seeders.orderProducts.down(queryInterface);
     await seeders.orders.down(queryInterface);
     await seeders.userAddresses.down(queryInterface);

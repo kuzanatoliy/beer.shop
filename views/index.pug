@@ -28,6 +28,9 @@ html
           when '/goods/id'
             include pages/product
             - break
+          when '/basket/orders'
+            include pages/basket-orders
+            - break
           default
             include pages/default
     footer
