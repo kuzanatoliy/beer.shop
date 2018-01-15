@@ -31,6 +31,12 @@ html
           when '/basket/orders'
             include pages/basket-orders
             - break
+          when '/admin'
+            include pages/admin
+            -break
+          when '/admin/model'
+            include pages/admin-model
+            -break
           default
             include pages/default
     footer

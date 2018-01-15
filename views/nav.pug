@@ -1,12 +1,19 @@
 div.menu
   ul.left
     li.menu-item
-      a(href='/') home
+      a(href='/') Home
     li.menu-item 
-      a(href='/goods') goods
+      a(href='/goods') Goods
     if userData
-      li.menu-item 
-        a(href="/busket") busket
+      case userData.role
+        when 'customers'
+          li.menu-item 
+            a(href="/busket") Busket
+          -break
+        when 'administrator'
+          li.menu-item 
+            a(href="/admin") Administrate
+          -break
   ul.right
     if userData
       li.menu-item

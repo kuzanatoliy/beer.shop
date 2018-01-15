@@ -1,0 +1,31 @@
+h2!=modelData.name
+table
+  thead
+    tr
+      th №
+      each key in modelData.keys
+        th #{ modelData.fields[key] }
+  each item in modelData.data
+    tbody
+      form(method='post')
+        tr
+          td!=item.id
+          each key in modelData.keys
+            td
+              input(type='text' name!=key value!=item[key])
+          td
+            input(type='reset' value='reset')
+          td
+            button(type='submit' formaction='/admin/'+modelData.name+'/update/'+item.id) save
+  tbody
+    form(method='post')
+      tr
+        td
+        each key in modelData.keys
+          td
+            input(type='text' name!=key)
+        td
+          input(type='reset' value='reset')
+        td
+          button(type='submit' formaction='/admin/'+modelData.name+'/add') add
+             
