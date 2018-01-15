@@ -23,6 +23,16 @@ const modelsOptions = {
   'variants': {
     model: models.Variants,
     fields: { name: 'Name' }
+  },
+  'products': {
+    model: models.Products,
+    fields: { name: 'Name', type_id: 'Type' },
+    include: {
+      type_id: {
+        model: models.productTypes,
+        field: 'name'
+      }
+    }
   }
 };
 
@@ -50,10 +60,11 @@ router.post('/:model/update/:id', async (req, res) => {
 router.get('/:model', async (req, res) => {
   const { session, params } = req;
   try {
-    const { model, fields } = modelsOptions[params.model];
+    const { model, fields, include } = modelsOptions[params.model];
     session.page += '/model';
     session.title += ` - ${ params.name }`;
     const result = await action.getAll(model);
+    
     res.render('index', {
       ...session,
       modelData: { data: result, fields, keys: Object.keys(fields), name: params.model }
