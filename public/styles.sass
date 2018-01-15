@@ -46,3 +46,46 @@ nav
       display: flex
       padding: 0
       margin: 0
+
+.main
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+  justify-content: center
+  align-items: center
+  padding: 3em
+  
+  .model
+    display: flex
+    align-items: center
+    flex-direction: column
+
+  h2
+    font-size: 5em
+    text-align: center
+  
+  th, td, input[type='text']
+    font-size: 1.5em
+
+  input[type='reset'], button
+    font-size: 1.5em
+    background-color: $special-color
+    color: $light-color
+    border: none
+    width: 100%
+    min-width: 150px
+    text-align: center
+  
+  input[type='reset']:hover, button:hover, .model-link:hover
+    border-bottom: solid 3px
+    border-bottom-color: $primary-color
+    color: $primary-color
+
+  .model-link
+    display: inline-block
+    text-decoration: none
+    font-size: 2em
+    background-color: $special-color
+    color: $light-color
+    padding: 0.5em 1.5em
+    margin: 0.5em 0.5em
