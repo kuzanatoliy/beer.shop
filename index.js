@@ -20,13 +20,13 @@ app.use('/basket', basket);
 
 app.use('/admin', (req, res, next) => {
   const { session } = req;
-  session.userData = { id: 3, login: 'admSasha', name: 'Sasha', surname: 'Pupkin', role: 'administrator' };
-  //if (!(session.userData && session.userData.role === 'administrator')) {
+  if (session.userData && session.userData.role === 'administrator') {
     session.page = '/admin';
     session.title = 'admin';
     next();
-    //res.redirect('/');
-  //}
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.use('/admin', admin);

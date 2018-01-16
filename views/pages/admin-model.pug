@@ -1,3 +1,11 @@
+mixin select(list, field, name, selected)
+  select(name!=name)
+    each item in list
+      if item.id == selected
+        option(value!=item.id selected)!=item[field]
+      else
+        option(value!=item.id)!=item[field]
+
 div.model
   h2!=modelData.name
   table
@@ -12,8 +20,12 @@ div.model
           tr
             td!=item.id
             each key in modelData.keys
+              - const field = modelData.hardFields[key]
               td
-                input(type='text' name!=key value!=item[key])
+                if field
+                  +select(field.data, field.field, key, item[key])
+                else
+                  input(type='text' name!=key value!=item[key])
             td
               input(type='reset' value='reset')
             td
@@ -23,8 +35,12 @@ div.model
         tr
           td
           each key in modelData.keys
+            - const field = modelData.hardFields[key]
             td
-              input(type='text' name!=key)
+              if field
+                +select(field.data, field.field, key)
+              else
+                input(type='text' name!=key)
           td
             input(type='reset' value='reset')
           td

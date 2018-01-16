@@ -29,7 +29,7 @@ const modelsOptions = {
     fields: { name: 'Name', type_id: 'Type' },
     include: {
       type_id: {
-        model: models.productTypes,
+        model: models.ProductTypes,
         field: 'name'
       }
     }
@@ -64,10 +64,17 @@ router.get('/:model', async (req, res) => {
     session.page += '/model';
     session.title += ` - ${ params.name }`;
     const result = await action.getAll(model);
-    
+    const hardFields = (include)
+      ? await Object.keys(include).reduce(async (prev, curr) => {
+        const item = {};
+        item.data = await action.getAll(include[curr].model);
+        item.field = include[curr].field;
+        prev[curr] = item;
+        return prev;
+      }, {}) : {};
     res.render('index', {
       ...session,
-      modelData: { data: result, fields, keys: Object.keys(fields), name: params.model }
+      modelData: { data: result, fields, keys: Object.keys(fields), name: params.model, hardFields }
     });
   } catch (err) {
     console.error(err);
