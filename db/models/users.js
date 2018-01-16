@@ -10,7 +10,6 @@ const params = {
     allowNull: false,
     unique: true,
     isValidate: {
-      notNull: true,
       notEmpty: true,
       is: /^\w+$/
     }
@@ -19,7 +18,6 @@ const params = {
     type: Sequelize.STRING,
     allowNull: false,
     isValidate: {
-      notNull: true,
       notEmpty: true,
       is: /^[A-Z]?[a-z]+$/
     }
@@ -28,7 +26,6 @@ const params = {
     type: Sequelize.STRING,
     allowNull: false,
     isValidate: {
-      notNull: true,
       notEmpty: true,
       is: /^[A-Z]?[a-z]+$/
     }
@@ -37,7 +34,6 @@ const params = {
     type: Sequelize.STRING,
     allowNull: false,
     isValidate: {
-      notNull: true,
       notEmpty: true,
       is: /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }

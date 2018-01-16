@@ -15,7 +15,21 @@ app.use(bodyParser());
 app.use(session({ secret: 'beer shop' }));
 
 app.use('/', identification);
+
 app.use('/goods', goods);
+
+app.use('/basket', (req, res, next) => {
+  const { session } = req;
+  session.userData = { login: 'AngGel', name: 'Angelina', surname: 'Gelmut', id: 1, status: 'customers' };
+  if (session.userData && session.userData.role === 'customers') {
+    session.page = '/basket';
+    session.title = 'basket';
+    next();
+  } else {
+    res.redirect('/');
+  }
+});
+
 app.use('/basket', basket);
 
 app.use('/admin', (req, res, next) => {
