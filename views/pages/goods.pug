@@ -1,7 +1,6 @@
-.goods
-  each item in goods
-    .good
-      .title!= item.name
-      .body
-        .type!= item.type
-        a(href='/goods/'+item.id) More information
+each item in goods || []
+  .goods
+    .title!= item.name
+    .body
+      .type Type: #{ item.type }
+      a.link(href='/goods/'+item.id) More information

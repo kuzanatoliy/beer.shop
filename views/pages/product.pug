@@ -1,18 +1,18 @@
 .product
   .title #{ product.name }
   .body
-    .manufacture #{ product.manufacture }
-  .variants
-    each item in product.variants
-      if userData
-        form.variant(name!=item.variant method='post' action='/basket/'+item.id)
-          .title #{ item.variant }
-          .cost #{ item.cost }
-          .count
-            input(type='number' name='count')
-          .submit
-            input(type='submit' value='Put busket')
-      else
-        div.variant
-          .title #{ item.variant }
-          .cost #{ item.cost }
+    .manufacture Manufacture: #{ product.manufacture }
+    .variants
+      each item in product.variants
+        if userData
+          form.variant(name!=item.variant method='post' action='/basket/'+item.id)
+            .title #{ item.variant }
+            .cost Cost: #{ item.cost }
+            .count Count: 
+              input(type='number' name='count' min='1')
+            .submit
+              input(type='submit' value='Put busket')
+        else
+          div.variant
+            .title #{ item.variant }
+            .cost #{ item.cost }
