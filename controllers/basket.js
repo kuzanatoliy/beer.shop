@@ -30,7 +30,7 @@ router.post('/put', (req, res) => {
 
 router.get('/', (req, res) => {
   const { session } = req;
-  actions.getActiveOrder(session.userData.id)
+  actions.getBasketContent(session.userData.id)
     .then(result => {
       if (result.status) {
         res.render('index', { ...session, userBasket: result.data });

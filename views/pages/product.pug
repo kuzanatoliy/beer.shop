@@ -10,10 +10,11 @@
               input(type='hidden' name='id' value!=item.id)
               input(type='hidden' name='cost' value!=item.cost)
         .controls
+          - const item = product.variants[0] || {}
           label Count:
-          input(type='number' class='variant-count' min='1' value='1' name='count' form!=product.variants[0].variant)
-          .variant-cost Cost: #{ product.variants[0].cost }
-          input(type='submit' class='variant-submit' value='Put basket' form!=product.variants[0].variant)
+          input(type='number' class='variant-count' min='1' value='1' name='count' form!=item.variant)
+          .variant-cost Cost: #{ item.cost }
+          input(type='submit' class='variant-submit' value='Put basket' form!=item.variant)
       else
         each item in product.variants
           div.variant

@@ -10,12 +10,34 @@ const {
   Variants,
   Baskets
 } = require('../db/models');
-const Sequelize = require('sequelize');
 const { getConnection } = require('../db/connection');
 const connection = getConnection();
 
 const PUT_BASKET = {
   attributes: ['user_id', 'product_variant_id', 'count']
+};
+
+const BASKET_CONTENT = {
+  attributes: ['id'],
+  include: {
+    model: Baskets,
+    attributes: ['id', 'count'],
+    include: {
+      model: ProductVariants,
+      attributes: ['id', 'cost'],
+      include: [{
+        model: Variants,
+        attributes: ['name']
+      }, {
+        model: Products,
+        attributes: ['id', 'name'],
+        include: {
+          model: ProductTypes,
+          attributes: ['name']
+        }
+      }]
+    }
+  }
 };
 
 const GET_ALL_ORDERS_OPTIONS = {
@@ -28,12 +50,7 @@ const GET_ALL_ORDERS_OPTIONS = {
       attributes: ['id', 'date'],
       include: [{
         model: OrderStatuses,
-        attributes: ['name'],
-        where: {
-          name: {
-            [Sequelize.Op.not]: 'completed'
-          }
-        }
+        attributes: ['name']
       }, {
         model: OrderProducts,
         attributes: [[connection.fn('SUM', connection.col('cost')), 'cost']]
@@ -42,79 +59,36 @@ const GET_ALL_ORDERS_OPTIONS = {
   }
 };
 
-const GET_ACTIVE_ORDER_OPTIONS = {
-  attributes: ['id'],
-  include: {
-    model: UserAddresses,
-    attributes: ['id'],
-    include: {
-      model: Orders,
-      attributes: ['id', 'date'],
-      include: [{
-        model: OrderStatuses,
-        attributes: ['name'],
-        where: {
-          name: 'completed'
-        }
-      }, {
-        model: OrderProducts,
-        attributes: ['id', 'count', 'cost'],
-        include: {
-          model: ProductVariants,
-          attributes: ['id'],
-          include: [{
-            model: Variants,
-            attributes: ['name']
-          }, {
-            model: Products,
-            attributes: ['id', 'name', 'manufacture'],
-            include: {
-              model: ProductTypes,
-              attributes: ['name']
-            }
-          }]
-        }
-      }]
-    }
-  }
-};
-
 const convertOrder = item => ({
   id: item.id,
-  date: item.date,
+  date: `${ item.date.getDate() }.${ item.date.getMonth() + 1 }.${ item.date.getFullYear() }`,
   status: item.order_status.name,
   cost: item.order_products[0].cost
 });
-
-const convertProduct = item => ({
-  id: item.id,
-  count: item.count,
-  cost: item.cost,
-  variant: item.product_variant.variant.name,
-  name: item.product_variant.product.name,
-  manufacture: item.product_variant.product.manufacture,
-  type: item.product_variant.product.product_type.name
-});
-
-const convertProducts = data => {
-  return data.map(item => convertProduct(item));
-};
 
 const convertAllOrders = data => {
   return data[0].user_addresses.reduce((prev, curr) => prev.concat(curr.orders.map(item => convertOrder(item))), []);
 };
 
-const convertUserOrders = data => {
-  return data[0].user_addresses.reduce(
-    (prev, curr) => prev.concat(curr.orders.reduce(
-      (prev, curr) => prev.concat(convertProducts(curr.order_products)), [])), []);
+const convertProductVariant = data => ({
+  cost: data.cost,
+  variant: data.variant.name,
+  product: data.product.name,
+  type: data.product.product_type.name
+});
+
+const convertBasketContent = data => {
+  return data[0].baskets.map(item => ({
+    id: item.id,
+    count: item.count,
+    ...convertProductVariant(item.product_variant)
+  }));
 };
 
-const getActiveOrder = async id => {
+const getBasketContent = async id => {
   let result;
   try {
-    result = convertUserOrders(await Users.findAll({ where: { id }, ...GET_ACTIVE_ORDER_OPTIONS }));
-    console.log(result);
+    result = { status: true, data: convertBasketContent(await Users.findAll({ where: { id }, ...BASKET_CONTENT })) };
   } catch (err) {
     console.error(err);
     result = { status: false, message: 'Server error' };
@@ -151,7 +125,7 @@ const getAllOrders = async id => {
 };
 
 module.exports = {
+  getBasketContent,
   putBasket,
-  getAllOrders,
-  getActiveOrder
+  getAllOrders
 };

@@ -1,1 +1,18 @@
 .basket
+  table
+    thead
+      tr
+        th Product
+        th Variant
+        th Type
+        th Count
+        th Cost
+    if userData && userData.role == 'customers'
+      each item in userBasket || []
+        tbody(data-id!=item.id data-count!=item.count)
+          tr
+            td #{ item.product }
+            td #{ item.variant }
+            td #{ item.type }
+            td #{ item.count }
+            td #{ item.cost * item.count }
