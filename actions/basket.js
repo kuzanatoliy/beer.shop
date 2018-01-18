@@ -1,7 +1,22 @@
-const { Users, UserAddresses, Orders, OrderStatuses, OrderProducts, ProductVariants, Products, ProductTypes, Variants } = require('../db/models');
+const {
+  Users,
+  UserAddresses,
+  Orders,
+  OrderStatuses,
+  OrderProducts,
+  ProductVariants,
+  Products,
+  ProductTypes,
+  Variants,
+  Baskets
+} = require('../db/models');
 const Sequelize = require('sequelize');
 const { getConnection } = require('../db/connection');
 const connection = getConnection();
+
+const PUT_BASKET = {
+  attributes: ['user_id', 'product_variant_id', 'count']
+};
 
 const GET_ALL_ORDERS_OPTIONS = {
   attributes: ['id'],
@@ -107,6 +122,23 @@ const getActiveOrder = async id => {
   return result;
 };
 
+const putBasket = async (id, data) => {
+  let result;
+  try {
+    const params = {
+      user_id: id,
+      product_variant_id: data.id,
+      count: data.count
+    };
+    await Baskets.create(params, PUT_BASKET);
+    result = { status: true };
+  } catch (err) {
+    console.log(err);
+    result = { status: false, message: 'Server error' };
+  }
+  return result;
+};
+
 const getAllOrders = async id => {
   let result;
   try {
@@ -119,6 +151,7 @@ const getAllOrders = async id => {
 };
 
 module.exports = {
+  putBasket,
   getAllOrders,
   getActiveOrder
 };

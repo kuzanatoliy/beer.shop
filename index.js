@@ -20,7 +20,7 @@ app.use('/goods', goods);
 
 app.use('/basket', (req, res, next) => {
   const { session } = req;
-  session.userData = { login: 'AngGel', name: 'Angelina', surname: 'Gelmut', id: 1, status: 'customers' };
+  session.userData = { login: 'AngGel', name: 'Angelina', surname: 'Gelmut', id: 1, role: 'customers' };
   if (session.userData && session.userData.role === 'customers') {
     session.page = '/basket';
     session.title = 'basket';

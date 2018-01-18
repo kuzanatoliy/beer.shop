@@ -3,16 +3,19 @@
   .body
     .manufacture Manufacture: #{ product.manufacture }
     .variants
-      each item in product.variants
-        if userData
-          form.variant(name!=item.variant method='post' action='/basket/'+item.id)
-            .title #{ item.variant }
-            .cost Cost: #{ item.cost }
-            .count Count: 
-              input(type='number' name='count' min='1')
-            .submit
-              input(type='submit' value='Put busket')
-        else
+      if userData && userData.role == 'customers'
+        each item in product.variants
+          button(class='variant' data-target!=item.variant) #{ item.variant }
+            form.variant(name!=item.variant id!=item.variant method='post' action='/basket/put')
+              input(type='hidden' name='id' value!=item.id)
+              input(type='hidden' name='cost' value!=item.cost)
+        .controls
+          label Count:
+          input(type='number' class='variant-count' min='1' value='1' name='count' form!=product.variants[0].variant)
+          .variant-cost Cost: #{ product.variants[0].cost }
+          input(type='submit' class='variant-submit' value='Put basket' form!=product.variants[0].variant)
+      else
+        each item in product.variants
           div.variant
             .title #{ item.variant }
             .cost #{ item.cost }

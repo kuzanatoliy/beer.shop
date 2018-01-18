@@ -64,7 +64,7 @@ nav
     font-size: 5em
     text-align: center
   
-  th, td, input[type='text'], label, input[type="password"]
+  th, td, input[type='text'], label, input[type="password"], input[type='number']
     font-size: 1.5em
   
   select
@@ -144,10 +144,22 @@ nav
   border: solid $special-color 2px
   padding: 0.75em
 
-  .title, .cost, .count, .submit
+  button.variant
+    color: $primary-color
+    background-color: $light-color
+    border: solid 2px $special-color
+    border-radius: 0.2em
     display: inline-block
-    margin-right: 1em
-    min-width: 100px
+    width: auto
+    min-width: auto
+    padding: 0.2em
+    margin-right: 0.5em
 
-  .submin
-    font-size: 0.75em
+  button.variant.active
+    background-color: $special-color
+
+  .controls
+    margin-top: 1em
+
+    .variant-cost
+      font-size: 1.5em

@@ -11,8 +11,10 @@ const { UserAddresses } = require('./user-addresses');
 const { UserDiscounts } = require('./user-discounts');
 const { Users } = require('./users');
 const { Variants } = require('./variants');
+const { Baskets } = require('./baskets');
 
 module.exports = {
+  Baskets,
   Cities,
   OrderProducts,
   OrderStatuses,

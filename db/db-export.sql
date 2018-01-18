@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `baskets`
+--
+
+DROP TABLE IF EXISTS `baskets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `baskets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `product_variant_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `basket_user_id_key_idx` (`user_id`),
+  KEY `basket_product_variant_id_key_idx` (`product_variant_id`),
+  CONSTRAINT `basket_product_variant_id_key` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `basket_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `baskets`
+--
+
+LOCK TABLES `baskets` WRITE;
+/*!40000 ALTER TABLE `baskets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `baskets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cities`
 --
 
@@ -24,10 +53,11 @@ DROP TABLE IF EXISTS `cities`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `cities_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +66,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Gomel'),(2,'Minsk');
+INSERT INTO `cities` VALUES (3,'Bugagaga'),(1,'Gomel'),(2,'Minsk');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,10 +84,10 @@ CREATE TABLE `order_products` (
   `count` int(11) NOT NULL,
   `cost` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_product_order_id_key_idx` (`order_id`),
-  KEY `order_product_product_variant_id_key_idx` (`product_variant_id`),
-  CONSTRAINT `order_product_order_id_key` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_product_product_variant_id_key` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `order_id` (`order_id`),
+  KEY `product_variant_id` (`product_variant_id`),
+  CONSTRAINT `order_products_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_products_ibfk_2` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,8 +110,10 @@ DROP TABLE IF EXISTS `order_statuses`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `order_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `order_statuses_name_unique` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,7 +123,7 @@ CREATE TABLE `order_statuses` (
 
 LOCK TABLES `order_statuses` WRITE;
 /*!40000 ALTER TABLE `order_statuses` DISABLE KEYS */;
-INSERT INTO `order_statuses` VALUES (1,'completed'),(2,'delivered'),(3,'received'),(4,'canceled');
+INSERT INTO `order_statuses` VALUES (4,'canceled'),(1,'completed'),(2,'delivered'),(3,'received');
 /*!40000 ALTER TABLE `order_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,12 +138,12 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_address_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
-  `date` datetime NOT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_user_address_id_key_idx` (`user_address_id`),
-  KEY `order_order_status_id_key_idx` (`status_id`),
-  CONSTRAINT `order_order_status_id_key` FOREIGN KEY (`status_id`) REFERENCES `order_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_user_address_id_key` FOREIGN KEY (`user_address_id`) REFERENCES `user_addresses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `user_address_id` (`user_address_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_address_id`) REFERENCES `user_addresses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `order_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -121,7 +153,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,1,'2018-01-12 15:46:34'),(2,1,1,'2018-01-12 15:46:34');
+INSERT INTO `orders` VALUES (1,1,1,'2018-01-15 08:08:26'),(2,1,2,'2018-01-15 08:08:26');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,14 +166,14 @@ DROP TABLE IF EXISTS `product_counts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_counts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_id` int(11) NOT NULL,
   `product_variant_id` int(11) NOT NULL,
   `count` int(11) NOT NULL,
-  `city_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `product_count_product_variant_id_key_idx` (`product_variant_id`),
-  KEY `product_count_city_id_key_idx` (`city_id`),
-  CONSTRAINT `product_count_city_id_key` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `product_count_product_variant_id_key` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `city_id` (`city_id`),
+  KEY `product_variant_id` (`product_variant_id`),
+  CONSTRAINT `product_counts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_counts_ibfk_2` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -151,7 +183,7 @@ CREATE TABLE `product_counts` (
 
 LOCK TABLES `product_counts` WRITE;
 /*!40000 ALTER TABLE `product_counts` DISABLE KEYS */;
-INSERT INTO `product_counts` VALUES (1,1,200,1),(2,2,200,1),(3,3,200,1),(4,4,200,1),(5,5,200,1),(6,6,200,1),(7,7,200,1),(8,8,200,1),(9,1,200,2),(10,2,200,2),(11,3,200,2),(12,4,200,2),(13,5,200,2),(14,6,200,2),(15,7,200,2),(16,8,200,2);
+INSERT INTO `product_counts` VALUES (1,1,1,200),(2,1,2,200),(3,1,3,200),(4,1,4,200),(5,1,5,200),(6,1,6,200),(7,1,7,200),(8,1,8,200),(9,2,1,200),(10,2,2,200),(11,2,3,200),(12,2,4,200),(13,2,5,200),(14,2,6,200),(15,2,7,200),(16,2,8,200);
 /*!40000 ALTER TABLE `product_counts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,9 +196,11 @@ DROP TABLE IF EXISTS `product_types`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `product_types_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,10 +226,10 @@ CREATE TABLE `product_variants` (
   `product_id` int(11) NOT NULL,
   `cost` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `product_variant_product_id_idx` (`product_id`),
-  KEY `product_variant_variant_id_idx` (`variant_id`),
-  CONSTRAINT `product_variant_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `product_variant_variant_id` FOREIGN KEY (`variant_id`) REFERENCES `variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `variant_id` (`variant_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_variants_ibfk_1` FOREIGN KEY (`variant_id`) REFERENCES `variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_variants_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -218,12 +252,12 @@ DROP TABLE IF EXISTS `products`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `manufacture` varchar(45) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `manufacture` varchar(255) NOT NULL,
   `type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `product_type_id_key_idx` (`type_id`),
-  CONSTRAINT `product_type_id_key` FOREIGN KEY (`type_id`) REFERENCES `product_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `product_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,10 +280,11 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `roles_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,17 +306,17 @@ DROP TABLE IF EXISTS `user_addresses`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `phone` varchar(20) NOT NULL,
+  `phone` varchar(255) NOT NULL,
   `city_id` int(11) NOT NULL,
-  `street` varchar(45) NOT NULL,
-  `house` varchar(5) NOT NULL,
-  `flat` varchar(5) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
+  `street` varchar(255) NOT NULL,
+  `house` varchar(255) NOT NULL,
+  `flat` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_address_city_id_key_idx` (`city_id`),
-  KEY `user_address_user_id_key_idx` (`user_id`),
-  CONSTRAINT `user_address_city_id_key` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user_address_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `city_id` (`city_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_addresses_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -291,7 +326,7 @@ CREATE TABLE `user_addresses` (
 
 LOCK TABLES `user_addresses` WRITE;
 /*!40000 ALTER TABLE `user_addresses` DISABLE KEYS */;
-INSERT INTO `user_addresses` VALUES (1,'+3752988834556',1,'Internationality','12','13',1),(2,'+3752988834556',2,'Big street of worrier','15','136',1);
+INSERT INTO `user_addresses` VALUES (1,'+3752988834556',1,1,'Internationality','12','13'),(2,'+3752988834556',2,1,'Big street of worrier','15','136');
 /*!40000 ALTER TABLE `user_addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -307,8 +342,8 @@ CREATE TABLE `user_discounts` (
   `user_id` int(11) NOT NULL,
   `discount` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `discounts_user_id_key_idx` (`user_id`),
-  CONSTRAINT `discounts_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_discounts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -331,16 +366,17 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `surname` varchar(30) NOT NULL,
-  `password` varchar(256) NOT NULL,
-  `login` varchar(45) NOT NULL,
-  `role_id` int(11) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `surname` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `login_UNIQUE` (`login`),
-  KEY `user_role_id_key_idx` (`role_id`),
-  CONSTRAINT `user_role_id_key` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `login` (`login`),
+  UNIQUE KEY `users_login_unique` (`login`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +385,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Angelina','Gelmut','AngGel123','AngGel',1),(2,'Sasha','Pupkin','ManSasha123','managerSasha',2),(3,'Sasha','Pupkin','AdmSasha123','admSasha',3);
+INSERT INTO `users` VALUES (1,'AngGel','Angelina','Gelmut','AngGel123',1),(2,'managerSasha','Sasha','Pupkin','ManSasha123',2),(3,'admSasha','Sasha','Pupkin','AdmSasha123',3),(5,'kuzAnatoli','Anatoli','Kuzmiankou','kuzAnatoli123',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,8 +398,10 @@ DROP TABLE IF EXISTS `variants`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `variants` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `variants_name_unique` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -386,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-13 13:41:37
+-- Dump completed on 2018-01-18 15:30:15
