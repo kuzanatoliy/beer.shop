@@ -1,4 +1,14 @@
 .basket
+  .addresses
+    each item in userAddresses || []
+      .address(data-id!=item.id)
+        .phone Phone: #{ item.phone }
+        .street Street: #{ item.street }
+        .house House: #{ item.house }
+        .flat Flat: #{ item.flat }
+        .city City: #{ item.city }
+    .address-new
+      a(href='/basket/new-address') Create
   table
     thead
       tr
@@ -9,10 +19,15 @@
         th Cost
     if userData && userData.role == 'customers'
       each item in userBasket || []
-        tbody(data-id!=item.id data-count!=item.count)
+        - const cost = item.cost * item.count
+        tbody.product(data-id!=item.id data-count!=item.count data-cost!=cost data-product_variant_id!=item.product_variant_id)
           tr
             td #{ item.product }
             td #{ item.variant }
             td #{ item.type }
             td #{ item.count }
-            td #{ item.cost * item.count }
+            td #{ cost }
+  form(action="/basket/create" method='post' name='basket')
+    input(type='hidden' name='address')
+    input(type='hidden' name='goods')
+    input(type='submit' value='Create')

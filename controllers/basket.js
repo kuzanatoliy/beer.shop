@@ -28,12 +28,31 @@ router.post('/put', (req, res) => {
     });
 });
 
+router.post('/create', (req, res) => {
+  const { session, body } = req;
+  actions.createOrder(body.address, JSON.parse(body.goods))
+    .then(result => {
+      if (result.status) {
+        res.redirect(session.page);
+      } else {
+        res.render('index', { ...session, message: result.message });
+      }
+    });
+});
+
 router.get('/', (req, res) => {
   const { session } = req;
   actions.getBasketContent(session.userData.id)
     .then(result => {
       if (result.status) {
-        res.render('index', { ...session, userBasket: result.data });
+        actions.getAddresses(session.userData.id)
+          .then(addresses => {
+            if (addresses.status) {
+              res.render('index', { ...session, userBasket: result.data, userAddresses: addresses.data });
+            } else {
+              res.render('index', { ...session, message: result.message });
+            }
+          });
       } else {
         res.render('index', { ...session, message: result.message });
       }

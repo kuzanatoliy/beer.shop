@@ -12,7 +12,8 @@ const params = {
   },
   status_id: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 1
   },
   date: {
     type: Sequelize.DATE
