@@ -12,8 +12,6 @@ const {
   Baskets
 } = require('../db/models');
 const Sequelize = require('sequelize');
-const { getConnection } = require('../db/connection');
-const connection = getConnection();
 
 const PUT_BASKET_OPTIONS = {
   attributes: ['user_id', 'product_variant_id', 'count']
