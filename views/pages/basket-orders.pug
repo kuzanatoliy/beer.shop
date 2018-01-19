@@ -1,8 +1,7 @@
 .orders
   each item in userOrders
     .order
-      .number #{ item.id }
-      .date #{ item.date }
-      .cost #{ item.cost }
-      .status #{ item.status }
+      .number Number: #{ item.id }
+      .date Order: #{ item.date }
+      .status Status: #{ item.status }
       a.link(href='/basket/orders/'+item.id) show more

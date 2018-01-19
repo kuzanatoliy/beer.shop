@@ -128,10 +128,10 @@ const GET_ALL_ORDERS_OPTIONS = {
     include: {
       model: Orders,
       attributes: ['id', 'date'],
-      include: [{
+      include: {
         model: OrderStatuses,
         attributes: ['name']
-      }]
+      }
     }
   }
 };
@@ -142,7 +142,6 @@ const convertOrder = item => ({
     ? `${ item.date.getDate() }.${ item.date.getMonth() + 1 }.${ item.date.getFullYear() }`
     : '',
   status: item.order_status.name
-  //cost: item.order_products[0].cost
 });
 
 const convertAllOrders = data => {
